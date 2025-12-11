@@ -211,7 +211,7 @@ def home():
 
                 shap_items.append({
                     "raw_name": raw_name,
-                    "name": pretty_name,           # 👈 this is what we show in UI
+                    "name": pretty_name,           
                     "value": val,
                     "abs_value": abs(val),
                     "direction": "increases" if val > 0 else "decreases"

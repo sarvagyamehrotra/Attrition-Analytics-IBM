@@ -8,7 +8,13 @@ import shap
 import numpy as np
 from openai import OpenAI
 
-client = OpenAI()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+if OPENAI_API_KEY:
+    client = OpenAI(api_key=OPENAI_API_KEY)
+else:
+    client = None  # No key configured – LLM will be disabled
+
+
 app = Flask(__name__)
 
 # ---------- 1. Load your saved pipeline ----------
@@ -39,6 +45,15 @@ def generate_llm_suggestions(probability, shap_top, employee_inputs):
     shap_top: list of dicts with keys: name, direction, value
     employee_inputs: original input_dict (Age, JobRole, OverTime, etc.)
     """
+    if client is None:
+        return (
+            "LLM suggestions are currently disabled because no OpenAI API key is "
+            "configured on this system.\n\n"
+            "To enable AI-generated HR recommendations, please follow the steps in "
+            "README.md to set the OPENAI_API_KEY environment variable with your own "
+            "OpenAI API key."
+        )
+
     try:
         # Summarise key drivers in text
         driver_lines = []

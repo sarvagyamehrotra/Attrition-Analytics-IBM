@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Employee Attrition Risk – HR Console</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="container">
+    <!-- Title -->
+    <h1>Employee Attrition Risk – HR Console</h1>
+    <p>Enter employee details to estimate the probability that they may leave.</p>
+
+    <!-- Input Form -->
+    <form method="POST">
+        <!-- Numeric inputs -->
+        <div class="form-group">
+            <label for="Age">Age</label>
+            <input type="number" id="Age" name="Age"
+                   value="{{ form_data.get('Age', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="DistanceFromHome">Distance From Home (km)</label>
+            <input type="number" step="0.1" id="DistanceFromHome" name="DistanceFromHome"
+                   value="{{ form_data.get('DistanceFromHome', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="EnvironmentSatisfaction">Environment Satisfaction (1–4)</label>
+            <input type="number" min="1" max="4" id="EnvironmentSatisfaction"
+                   name="EnvironmentSatisfaction"
+                   value="{{ form_data.get('EnvironmentSatisfaction', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="JobLevel">Job Level</label>
+            <input type="number" min="1" max="5" id="JobLevel" name="JobLevel"
+                   value="{{ form_data.get('JobLevel', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="JobSatisfaction">Job Satisfaction (1–4)</label>
+            <input type="number" min="1" max="4" id="JobSatisfaction" name="JobSatisfaction"
+                   value="{{ form_data.get('JobSatisfaction', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="MonthlyIncome">Monthly Income</label>
+            <input type="number" id="MonthlyIncome" name="MonthlyIncome"
+                   value="{{ form_data.get('MonthlyIncome', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="NumCompaniesWorked">Number of Companies Worked</label>
+            <input type="number" id="NumCompaniesWorked" name="NumCompaniesWorked"
+                   value="{{ form_data.get('NumCompaniesWorked', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="TotalWorkingYears">Total Working Years</label>
+            <input type="number" id="TotalWorkingYears" name="TotalWorkingYears"
+                   value="{{ form_data.get('TotalWorkingYears', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="YearsAtCompany">Years at Company</label>
+            <input type="number" step="0.5" id="YearsAtCompany" name="YearsAtCompany"
+                   value="{{ form_data.get('YearsAtCompany', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="YearsInCurrentRole">Years in Current Role</label>
+            <input type="number" step="0.5" id="YearsInCurrentRole" name="YearsInCurrentRole"
+                   value="{{ form_data.get('YearsInCurrentRole', '') }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="YearsWithCurrManager">Years with Current Manager</label>
+            <input type="number" step="0.5" id="YearsWithCurrManager"
+                   name="YearsWithCurrManager"
+                   value="{{ form_data.get('YearsWithCurrManager', '') }}" required>
+        </div>
+
+        <!-- Categorical: JobRole -->
+        <div class="form-group">
+            <label for="JobRole">Job Role</label>
+            {% set jr = form_data.get('JobRole', '') %}
+            <select id="JobRole" name="JobRole" required>
+                <option value="">-- Select Job Role --</option>
+                <option value="Sales Executive" {% if jr == 'Sales Executive' %}selected{% endif %}>Sales Executive</option>
+                <option value="Developer" {% if jr == 'Developer' %}selected{% endif %}>Developer</option>
+                <option value="Research Scientist" {% if jr == 'Research Scientist' %}selected{% endif %}>Research Scientist</option>
+                <option value="Laboratory Technician" {% if jr == 'Laboratory Technician' %}selected{% endif %}>Laboratory Technician</option>
+                <option value="Manufacturing Director" {% if jr == 'Manufacturing Director' %}selected{% endif %}>Manufacturing Director</option>
+                <option value="Healthcare Representative" {% if jr == 'Healthcare Representative' %}selected{% endif %}>Healthcare Representative</option>
+                <option value="Manager" {% if jr == 'Manager' %}selected{% endif %}>Manager</option>
+                <option value="Sales Representative" {% if jr == 'Sales Representative' %}selected{% endif %}>Sales Representative</option>
+                <option value="Research Director" {% if jr == 'Research Director' %}selected{% endif %}>Research Director</option>
+                <option value="Human Resources" {% if jr == 'Human Resources' %}selected{% endif %}>Human Resources</option>
+            </select>
+        </div>
+
+        <!-- Categorical: MaritalStatus -->
+        <div class="form-group">
+            <label for="MaritalStatus">Marital Status</label>
+            {% set ms = form_data.get('MaritalStatus', '') %}
+            <select id="MaritalStatus" name="MaritalStatus" required>
+                <option value="">-- Select Marital Status --</option>
+                <option value="Single" {% if ms == 'Single' %}selected{% endif %}>Single</option>
+                <option value="Married" {% if ms == 'Married' %}selected{% endif %}>Married</option>
+                <option value="Divorced" {% if ms == 'Divorced' %}selected{% endif %}>Divorced</option>
+            </select>
+        </div>
+
+        <!-- Categorical: OverTime -->
+        <div class="form-group">
+            <label for="OverTime">OverTime</label>
+            {% set ot = form_data.get('OverTime', '') %}
+            <select id="OverTime" name="OverTime" required>
+                <option value="">-- Select --</option>
+                <option value="Yes" {% if ot == 'Yes' %}selected{% endif %}>Yes</option>
+                <option value="No" {% if ot == 'No' %}selected{% endif %}>No</option>
+            </select>
+        </div>
+
+        <button type="submit">Predict Attrition Risk</button>
+    </form>
+
+    {% if probability is not none %}
+        <!-- Probability card -->
+        <div class="result">
+            {% if probability is string %}
+                <p><strong>{{ probability }}</strong></p>
+            {% else %}
+                <h2>Predicted Probability of Leaving: {{ probability }}%</h2>
+                <p>(Higher % means higher risk of attrition.)</p>
+            {% endif %}
+        </div>
+
+        <!-- SHAP + Suggestions section -->
+        <div class="section-grid">
+            {% if shap_top %}
+                <div class="card card-shap">
+                    <h3>Key Drivers for This Prediction</h3>
+                    <p class="card-subtitle">
+                        Positive values increase attrition risk; negative values reduce it.
+                    </p>
+
+                    <ul class="shap-list">
+                        {% for item in shap_top %}
+                            <li>
+                                <div class="shap-left">
+                                    <span class="shap-feature">{{ item.name }}</span>
+                                    <span class="shap-direction">{{ item.direction }} risk</span>
+                                </div>
+                                <span class="shap-value">
+                                    {{ "%.3f"|format(item.value) }}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="card card-suggestions">
+                <h3>Suggested Next Steps</h3>
+                <p class="card-subtitle">
+                    This box shows retention suggestions using the risk and key drivers.
+                </p>
+
+                {% if suggestions %}
+                    <div class="suggestion-text">
+                        {{ suggestions|safe }}
+                    </div>
+                {% else %}
+                    <p class="suggestion-placeholder">
+                        (Next: we will connect this to an LLM and add a “Generate Suggestions” button.)
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>

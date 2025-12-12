@@ -1,0 +1,19 @@
+create virtual environment - 
+python -m venv app_test
+---------------------------------------------------------
+activate virtual environment - 
+(command: app_test/Scripts/activate) for windows users.
+(command: source venv/bin/activate) for mac users.
+---------------------------------------------------------
+Clone repository-
+git clone https://github.com/sarvagyamehrotra/Attrition-Analytics-IBM.git
+---------------------------------------------------------
+install Dependencies-
+pip install -r requirements.txt
+---------------------------------------------------------
+Set OpenAI API KEY-
+$env:OPENAI_API_KEY = "your_api_key_here" 
+---------------------------------------------------------
+Run app - 
+python app.py
+---------------------------------------------------------

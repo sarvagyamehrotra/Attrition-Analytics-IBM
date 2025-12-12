@@ -3,7 +3,7 @@
 This repository contains an end-to-end **employee attrition analytics** project developed as part of the AI-Integrated Strategy Management Project for the EMBA program at IIM Ranchi.
 
 
-## 1. Repository Structure
+## 1. Repository Structure (You can ignore this and find the structure in the github repo link provided in the Project Report.)
 
 ```text
 .
@@ -28,96 +28,93 @@ This repository contains an end-to-end **employee attrition analytics** project 
 │   css/, js/, images/             # Static assets for the web UI (if used)
 └─ .gitignore                      # Files and folders excluded from Git
 
----
+-------------------------------------------------------------------------
 
-## 2. How to setup the project
+2. How to setup the Application in 5 steps:
 
-2.1. Prerequisites
+Prerequisites
 
 Please ensure the following software is installed:
 -Python 3.9+
 -Git
 -Power BI Desktop (for opening the .pbix dashboard)
 -Visual Studio Code (recommended editor)
+-------------------------------------------
+Step -1  Clone the repository
 
-2.2. Clone the Repository
+1- Open Powershell as Administrator:
+ - Navigate to your desktop path 
+ (comand : cd C:\your_desktop_path_here)
 
-Open a terminal (or PowerShell) and run:
+ - make a new folder here called attrition_app_test 
+ (command: mkdir attrition_app_test)
+ or you can do this manually on the desktop-> right click -> create folder -> name it attrition_app_test
 
-git clone https://github.com/sarvagyamehrotra/Attrition-Analytics-IBM.git
-cd Attrition-Analytics-IBM
+ - navigate inside this folder from powershell: 
+ (command: cd .\attririon_app_test\)
+----------------------------------------------
 
-All subsequent commands assume you are inside this project folder.
+Step 2 - Create a new virtual environment:
 
-2.3. Create and Activate a Virtual Environment (recommended)
+ - inside the attrition_app_test use 
+ (command: python -m venv app_test) for windows users and mac both
+    This will create a virtual test environment
 
-On Windows (PowerShell): execute the following commands
+ - Activate the environment using 
+ (command: app_test/Scripts/activate) for windows users
+ (command: source venv/bin/activate) for mac users.
 
-python -m venv venv
-venv\Scripts\activate
+ You should now see (app_test) at the beginning of your terminal prompt, something like this: 
+ (app_test) PS C:\Users\Sarva\Desktop\attrition_app_test>
+-----------------------------------------------------
 
-On macOS / Linux:
-python -m venv venv
-source venv/bin/activate
+Step 3 - Clone the GitHub repository:
+3.1- inside this path '\Desktop\attrition_app_test' (Yours would be different before 'Desktop') Run the command:
+ (- Command : git clone https://github.com/sarvagyamehrotra/Attrition-Analytics-IBM.git)
+------------------------------------------------------
 
-You should now see (venv) at the beginning of your terminal prompt.
+3.2 Install Python Dependencies: execute the following commands in the vscode terminal:
 
-2.4. Install Python Dependencies: execute the following command in the vscode terminal
-pip install -r requirements.txt
+1- Navigate to the newly created Attrition-Analytics-IBM folder after git clone inside the attrition_app_test folder.
+(command: cd .\Attrition-Analytics-IBM\)
+------------------------------------------------------
 
-This will install all required libraries for:
-Data loading and EDA
-Model training and prediction (XGBoost, scikit-learn, SHAP)
-The Flask web application
-Jupyter notebooks
-LLM integration with the OpenAI API
+Step 4- Install requirements from requirements.txt using
+ (commmand: pip install -r requirements.txt)
+wait for the installation to complete. The cursor will keep blinking while installing. Once installed you will this on the terminal:
+(app_test) PS C:\Users\Sarva\Desktop\attrition_app_test\Attrition-Analytics-IBM> 
+---------------------------------------------------------------------------------------------------
+Step 5- Run the app: (Note: If you want LLM integration then execute step 6 before step 5)
+-  When inside this path .\Desktop\attrition_app_test\Attrition-Analytics-IBM execute the command:
+(command: python app.py)
 
----
-3. Working with the Jupyter Notebooks
+this will launch the server and display the server link where the app is hosted.
+Simply copy and paste the URL in any browser and hit enter.
 
-The notebooks are in the notebooks/ folder.
-3.1. Starting Jupyter
-From the project root (with the virtual environment activated):
-jupyter notebook
-A browser window will open. Navigate to the notebooks folder and open:
-Employee Attrition Analytics.ipynb
-probability_scores_dashboard_data.ipynb
-You can also open these notebooks directly inside VS Code if the Python and Jupyter extensions are installed.
+--------------------------------------------------------------------------------
+Step 6- LLM integration with the OpenAI API:
 
-3.2. Notebook 1: Employee Attrition Analytics
+Configure the OpenAI API Key (for LLM suggestions)
 
-This notebook performs the following:
-Loads data/Attrition_Data.csv
-Conducts exploratory data analysis (EDA):
-Summary statistics
-Distributions of key variables
-Correlations between features and attrition
-Visualizations for important patterns
-Performs data preprocessing and feature engineering
-Trains an XGBoost classifier to predict attrition (Yes/No)
-Evaluates the model using appropriate classification metrics
-Uses SHAP to:
-Identify global feature importance
-Interpret individual predictions
-Running this notebook from top to bottom will reproduce the model-building pipeline and the reasoning behind the selected model.
+The app uses OpenAI’s API to generate HR Strategy actions based on the model’s predictions and SHAP explanations.
+To enable this feature:
+- Obtain an OpenAI API key from your OpenAI account. Log in to the API key platform from OpenAI page and go to your profile. Navigate to API key section and generate a new secret key. Copy this key
+- Set an environment variable named OPENAI_API_KEY.
+Command (Windows PowerShell): $env:OPENAI_API_KEY = "your_api_key_here" (your key should be insde the inverted commas)
+Command (macOS / Linux): export OPENAI_API_KEY="your_api_key_here"
 
-3.3. Notebook 2: Probability Scores for Dashboard
+If OPENAI_API_KEY is not set, the web app will still run, but the LLM-based suggestion box will show a message indicating that suggestions are disabled.
 
-probability_scores_dashboard_data.ipynb:
-Loads the final trained model from models/attrition_xgb_model.pkl
-Applies the model to each employee in the dataset
-Computes predicted probability of attrition for each employee
-Saves the results into data/attrition_scores.csv
-The Power BI dashboard uses attrition_scores.csv as its main data source.
+---------------------------------------------------------------------------------
 
-4. Using the Power BI Dashboard
+7 - Using the Power BI Dashboard:
 The Power BI dashboard is located at:
 dashboards/Attrition_Dashboard.pbix
 
 Steps to open and explore:
 Open Power BI Desktop.
 Go to File → Open and select Attrition_Dashboard.pbix.
-If prompted for file locations, point Power BI to the data/Attrition_Data.csv and data/attrition_scores.csv files inside this project folder.
+If prompted for file locations, point Power BI to the data/attrition_scores.csv file inside this project folder.
 Click Refresh on the Home ribbon to make sure the latest data is loaded.
 Explore the dashboard pages:
 Overall attrition overview
@@ -125,34 +122,11 @@ Department-wise and job-role-wise risk
 Distribution of probability scores
 Drill-down views for specific segments or employees
 The dashboard is designed to give a high-level view of workforce stability and highlight high-risk groups.
+-----------------------------------------------------------------------------------
 
-5. Running the Flask Web Application (Localhost)
+8 - Using the Web UI
 
-The Flask app provides an HR-friendly interface to check attrition risk for a single employee.
-
-5.1. Open the Project in VS Code:
-Start Visual Studio Code.
-Choose File → Open Folder… and select the cloned repository folder (Attrition-Analytics-IBM).
-Open the integrated terminal (View → Terminal).
-Activate the virtual environment if it is not already active.
-
-5.2. Configure the OpenAI API Key (for LLM suggestions)
-
-The app uses OpenAI’s API to generate suggested HR actions based on the model’s predictions and SHAP explanations.
-To enable this feature:
-Obtain an OpenAI API key from your OpenAI account.
-Set an environment variable named OPENAI_API_KEY.
-Example (Windows PowerShell): $env:OPENAI_API_KEY = "your_api_key_here"
-Example (macOS / Linux): export OPENAI_API_KEY="your_api_key_here"
-
-If OPENAI_API_KEY is not set, the web app will still run, but the LLM-based suggestion box will show a message indicating that suggestions are disabled.
-
-5.3. Start the Flask App: execute the following command in app.py terminal view
-python app.py
-
-5.4. Using the Web UI
-
-Open a browser and go to http://127.0.0.1:5000/.
+Open a browser and go to the URL displayed after executing python app.py
 Fill in the employee details on the form (distance from home, years at company, job role, department, etc.).
 Click the Predict button.
 The app will:
@@ -163,15 +137,7 @@ If an OpenAI key is configured:
 Generate suggested next steps for HR to retain the employee or manage the risk.
 The UI is designed so that a non-technical HR user can easily interpret the results.
 
-6. Reproducing the Probability Scores Pipeline
-
-If you wish to regenerate the probability scores from scratch:
-Run Employee Attrition Analytics.ipynb to (re)train the model and save attrition_xgb_model.pkl into models/.
-Run probability_scores_dashboard_data.ipynb to:
-Load the latest model
-Compute updated probability scores
-Write a new data/attrition_scores.csv
-Open the Power BI file and click Refresh to update the dashboard.
+------------------------------------------------------------------------------------
 
 7. Notes for Reviewers / Professors
 

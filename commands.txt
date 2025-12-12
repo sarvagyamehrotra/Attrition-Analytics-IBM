@@ -10,10 +10,14 @@ git clone https://github.com/sarvagyamehrotra/Attrition-Analytics-IBM.git
 ---------------------------------------------------------
 install Dependencies-
 pip install -r requirements.txt
+
+this usually takes 3-4 minutes. Let it install completely.
 ---------------------------------------------------------
 Set OpenAI API KEY-
 $env:OPENAI_API_KEY = "your_api_key_here" 
 ---------------------------------------------------------
 Run app - 
 python app.py
+---------------------------------------------------------
+Once the server is running, to stop it go back to the powershell terminal and press ctrl+c
 ---------------------------------------------------------
